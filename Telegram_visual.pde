@@ -21,7 +21,7 @@ Date lastDate = null;
 int allTexts = 0;
 
 void setup() {
-  size(800, 800);
+  size(1280, 720);
   loadData();
 }
 
@@ -31,7 +31,7 @@ void draw() {
 }
 
 void loadData() {
-  JSONObject json = loadJSONObject("abel.json");
+  JSONObject json = loadJSONObject("meek1.json");
   JSONArray messages = json.getJSONArray("messages");
 
   for (int i = 0; i < messages.size(); i++) {
@@ -76,13 +76,14 @@ void drawGrid() {
   int cols = 53; 
   int rows = 7; 
 
-  float cellWidth = 10;
-  float cellHeight = 10;
-  float gridWidth = cols * cellWidth;
-  float gridHeight = rows * cellHeight;
+  float cellWidth = 13; 
+  float cellHeight = 13; 
+  float spacing = 2; 
+  float gridWidth = cols * (cellWidth + spacing);
+  float gridHeight = rows * (cellHeight + spacing);
 
   for (int year = startYear; year <= endYear; year++) {
-    float gridY = (year - startYear) * (gridHeight + cellHeight); 
+    float gridY = (year - startYear) * (gridHeight + spacing + 20); 
 
     for (int i = 0; i < cols; i++) {
       for (int j = 0; j < rows; j++) {
@@ -90,16 +91,13 @@ void drawGrid() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = sdf.format(day.getTime());
         if (dailyTextCount.containsKey(dateString)) {
-          
-          fill(map(dailyTextCount.get(dateString), 0, 10, 0, 255)); 
-        
-        
+          fill(255 - map(dailyTextCount.get(dateString), 0, 10, 0, 255)); 
         } else {
-          fill(255,0,0); 
+          fill(120, 30); 
         }
-        float x = i * cellWidth;
-        float y = gridY + j * cellHeight;
-        rect(x, y, cellWidth, cellHeight);
+        float x = i * (cellWidth + spacing); 
+        float y = gridY + j * (cellHeight + spacing); 
+        rect(x + 10, y + 10, cellWidth, cellHeight, 3);
       }
     }
   }

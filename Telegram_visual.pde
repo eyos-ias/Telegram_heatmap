@@ -23,15 +23,16 @@ int allTexts = 0;
 void setup() {
   size(1280, 720);
   loadData();
-}
-
-void draw() {
   background(255);
   drawGrid();
 }
 
+// void draw() {
+  
+// }
+
 void loadData() {
-  JSONObject json = loadJSONObject("meek1.json");
+  JSONObject json = loadJSONObject("yewe.json");
   JSONArray messages = json.getJSONArray("messages");
 
   for (int i = 0; i < messages.size(); i++) {
@@ -82,12 +83,15 @@ void drawGrid() {
   float gridWidth = cols * (cellWidth + spacing);
   float gridHeight = rows * (cellHeight + spacing);
 
+  float marginLeft = (width - gridWidth) / 2;
+
   for (int year = startYear; year <= endYear; year++) {
     float gridY = (year - startYear) * (gridHeight + spacing + 20); 
 
-    for (int i = 0; i < cols; i++) {
+  for (int i = 0; i < cols; i++) {
       for (int j = 0; j < rows; j++) {
         Calendar day = new GregorianCalendar(year, 0, i * rows + j + 1); 
+        if (day.get(Calendar.YEAR) != year) continue; // Skip the day if it's not in the current year
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = sdf.format(day.getTime());
         if (dailyTextCount.containsKey(dateString)) {
@@ -95,7 +99,7 @@ void drawGrid() {
         } else {
           fill(120, 30); 
         }
-        float x = i * (cellWidth + spacing); 
+        float x = marginLeft + i * (cellWidth + spacing); 
         float y = gridY + j * (cellHeight + spacing); 
         rect(x + 10, y + 10, cellWidth, cellHeight, 3);
       }

@@ -85,24 +85,39 @@ void drawGrid() {
 
   float marginLeft = (width - gridWidth) / 2;
 
-  for (int year = startYear; year <= endYear; year++) {
-    float gridY = (year - startYear) * (gridHeight + spacing + 20); 
+for (int year = startYear; year <= endYear; year++) {
+  float gridY = (year - startYear) * (gridHeight + spacing + 20); 
+
+ 
+  fill(0); 
+  text(year, marginLeft - 50, gridY + gridHeight / 2);
+
+  int yearTextCount = 0; 
 
   for (int i = 0; i < cols; i++) {
-      for (int j = 0; j < rows; j++) {
-        Calendar day = new GregorianCalendar(year, 0, i * rows + j + 1); 
-        if (day.get(Calendar.YEAR) != year) continue; // Skip the day if it's not in the current year
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = sdf.format(day.getTime());
-        if (dailyTextCount.containsKey(dateString)) {
-          fill(255 - map(dailyTextCount.get(dateString), 0, 10, 0, 255)); 
-        } else {
-          fill(120, 30); 
-        }
-        float x = marginLeft + i * (cellWidth + spacing); 
-        float y = gridY + j * (cellHeight + spacing); 
-        rect(x + 10, y + 10, cellWidth, cellHeight, 3);
+    for (int j = 0; j < rows; j++) {
+      Calendar day = new GregorianCalendar(year, 0, i * rows + j + 1); 
+      if (day.get(Calendar.YEAR) != year) continue; 
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+      String dateString = sdf.format(day.getTime());
+      if (dailyTextCount.containsKey(dateString)) {
+        int count = dailyTextCount.get(dateString);
+        float brightness = map(count, 0, 10, 0, 255);
+        fill(color(14,22,33, brightness));
+        yearTextCount += dailyTextCount.get(dateString);
+      } else {
+        fill(120, 30); 
       }
+      float x = marginLeft + i * (cellWidth + spacing); 
+      float y = gridY + j * (cellHeight + spacing); 
+      rect(x + 10, y + 10, cellWidth, cellHeight, 3);
     }
   }
+
+  
+  fill(0); 
+  text(yearTextCount + " texts", marginLeft + gridWidth + 50, gridY + gridHeight / 2); 
+}
+
+
 }
